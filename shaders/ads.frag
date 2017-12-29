@@ -9,7 +9,7 @@ uniform vec3 ka;            // Ambient reflectivity
 uniform vec3 kd;            // Diffuse reflectivity
 uniform vec3 ks;            // Specular reflectivity
 uniform float shininess;    // Specular shininess factor
-
+uniform sampler2DShadow shadowMapTexture;
 
 in vec4 positionInLightSpace;
 
@@ -21,6 +21,7 @@ in vec4 color;
 
 vec3 dsModel(const in vec3 pos, const in vec3 n)
 {
+
     // Calculate the vector from the light to the fragment
     vec3 s = normalize(vec3(viewMatrix * vec4(lightPosition, 1.0)) - pos);
 
@@ -45,12 +46,13 @@ vec3 dsModel(const in vec3 pos, const in vec3 n)
 
 void main()
 {
-
+    float shadowMapSample = textureProj(shadowMapTexture, positionInLightSpace);
     vec3 ambient = lightIntensity * ka;
 
     vec3 result = ambient;
 
-    result += dsModel(position, normalize(normal));
+    if (shadowMapSample > 0)
+            result += dsModel(position, normalize(normal));
 
 
     //diffuse

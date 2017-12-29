@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>assets/cubemaps/miramar/miramar_posz.webp</file>
+        <file>assets/cubemaps/miramar/miramar_negx.webp</file>
+        <file>assets/cubemaps/miramar/miramar_negy.webp</file>
+        <file>assets/cubemaps/miramar/miramar_negz.webp</file>
+        <file>assets/cubemaps/miramar/miramar_posx.webp</file>
+        <file>assets/cubemaps/miramar/miramar_posy.webp</file>
+        <file>assets/textures/foam.jpg</file>
+        <file>assets/textures/sky.jpg</file>
+        <file>assets/textures/WaterDiffuse.jpg</file>
+        <file>assets/textures/WaterNormal.jpg</file>
+        <file>assets/textures/WaterSpecular.jpg</file>
+        <file>assets/textures/Waterwave.jpg</file>
+    </qresource>
+</RCC>

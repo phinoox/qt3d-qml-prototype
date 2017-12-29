@@ -20,7 +20,8 @@ OTHER_FILES += \
 
 RESOURCES += \
     shadow-map-qml.qrc \
-    obj.qrc
+    obj.qrc \
+    assets.qrc
 
 DISTFILES += \
     shaders/default.vert \
@@ -28,4 +29,11 @@ DISTFILES += \
     SceneEffect.qml \
     SceneMaterial.qml \
     shaders/scene.vert \
-    shaders/scene.frag
+    shaders/scene.frag \
+    SkyBox.qml \
+    shaders/skybox.vert \
+    shaders/skybox.frag \
+    WaterPlane.qml \
+    WaterMaterial.qml \
+    shaders/water.vert \
+    shaders/water.frag

@@ -21,5 +21,12 @@
         <file>SceneQuad.qml</file>
         <file>shaders/scene.vert</file>
         <file>shaders/scene.frag</file>
+        <file>SkyBox.qml</file>
+        <file>shaders/skybox.frag</file>
+        <file>shaders/skybox.vert</file>
+        <file>WaterPlane.qml</file>
+        <file>WaterMaterial.qml</file>
+        <file>shaders/water.frag</file>
+        <file>shaders/water.vert</file>
     </qresource>
 </RCC>

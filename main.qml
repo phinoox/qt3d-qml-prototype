@@ -81,6 +81,12 @@ Entity {
     }
     OrbitCameraController { camera: camera }
 
+    SkyBox {
+        cameraPosition:camera.position
+        sourceDirectory: "qrc:/assets/cubemaps/miramar/miramar"
+
+    }
+
     ShadowMapLight {
         id: light
     }
@@ -89,8 +95,9 @@ Entity {
             id: framegraph
             viewCamera: viewCamera
             sceneCamera: camera
-            width:_window.width
-            height:_window.height
+            lightCamera: light.lightCamera
+            width:_window.width*1.05
+            height:_window.height*1.05
         },
         // Event Source will be set by the Qt3DQuickWindow
         InputSettings { },
@@ -100,6 +107,7 @@ Entity {
 
     AdsEffect {
         id: shadowMapEffect
+        shadowTexture: framegraph.shadowDepthTexture
         light: light
     }
 
@@ -114,7 +122,6 @@ Entity {
     }
 
 
-
     // Toyplane entity
     Toyplane {
 
@@ -126,12 +133,9 @@ Entity {
     }
 
     // Plane entity
-    GroundPlane {
-            material: AdsMaterial {
-            effect: shadowMapEffect
-            diffuseColor: Qt.rgba(0.2, 0.5, 0.3, 1.0)
-            specularColor: Qt.rgba(0, 0, 0, 1.0)
-        }
+    WaterPlane {
+        shadowTexture: framegraph.shadowDepthTexture
+        light: light
     }
 
 

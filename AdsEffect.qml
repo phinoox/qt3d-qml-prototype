@@ -53,7 +53,7 @@ import Qt3D.Render 2.0
 
 Effect {
     id: root
-
+    property Texture2D shadowTexture
     property ShadowMapLight light
 
     // These parameters act as default values for the effect. They take
@@ -67,8 +67,8 @@ Effect {
     parameters: [
         Parameter { name: "lightViewProjection"; value: root.light.lightViewProjection },
         Parameter { name: "lightPosition";  value: root.light.lightPosition },
-        Parameter { name: "lightIntensity"; value: root.light.lightIntensity }
-
+        Parameter { name: "lightIntensity"; value: root.light.lightIntensity },
+        Parameter { name: "shadowMapTexture"; value: root.shadowTexture }
     ]
 
     techniques: [
@@ -104,6 +104,7 @@ Effect {
                     }
 
                     renderStates: [
+                        CullFace { mode: CullFace.Back },
                         PolygonOffset { scaleFactor: 1; depthSteps: 1 },
                         DepthTest { depthFunction: DepthTest.Less }
 

@@ -45,7 +45,7 @@ void main(void)
             pow(max(dot(normal.xyz,vHalfVector),0.0), 100) * 1.5;
 
     fragColor=test;
-
+    //fragColor=vec4(depth,depth,depth,1);
 
 }
 
