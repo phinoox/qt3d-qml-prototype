@@ -78,7 +78,7 @@ void main()
     positionInLightSpace = shadowMatrix * lightViewProjection * modelMatrix * vec4(vertexPosition, 1.0);
 
     normal = normalize(modelViewNormal * vertexNormal);
-    position = vec3(modelView * vec4(vertexPosition, 1.0));
+    position = vec3(modelMatrix * vec4(vertexPosition, 1.0));
     texCoord = vertexTexCoord;
     gl_Position = mvp * vec4(vertexPosition, 1.0);
 }

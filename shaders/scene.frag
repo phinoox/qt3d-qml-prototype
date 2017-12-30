@@ -31,7 +31,7 @@ void main(void)
 {
     vec4 image = texture2D( colorTexture, texcoord.xy );
     vec3 worldPosition = texture2D( positionTexture, texcoord.xy ).xyz;
-    vec4 normal = texture2D( normalTexture, texcoord.xy );
+    vec3 normal = texture2D( normalTexture, texcoord.xy ).xyz;
     float depth = LinearizeDepth(texcoord);// texture2D(depthTexture,texcoord.xy).r;
     vec3 light = vec3(50,100,50);
     vec3 lightDir = light - worldPosition ;
@@ -41,10 +41,11 @@ void main(void)
     vec3 viewSpacePos = calculate_view_position(texcoord,depth,v_fov_scale);
     vec3 eyeDir = normalize(cameraPosition-worldPosition);
     vec3 vHalfVector = normalize(lightDir.xyz+eyeDir);
-    vec4 test = max(dot(normal.xyz,lightDir),0) * image +
+    vec4 result = max(dot(normal.xyz,lightDir),0) * image +
             pow(max(dot(normal.xyz,vHalfVector),0.0), 100) * 1.5;
 
-    fragColor=test;
+    fragColor=vec4(normal,1);
+    fragColor=result;
     //fragColor=vec4(depth,depth,depth,1);
 
 }

@@ -17,6 +17,7 @@ out vec3 vpos;
 
 out vec4 positionInLightSpace;
 
+
 uniform mat4 modelMatrix;
 uniform mat3 modelNormalMatrix;
 uniform mat4 mvp;

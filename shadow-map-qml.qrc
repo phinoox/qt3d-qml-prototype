@@ -28,5 +28,9 @@
         <file>WaterMaterial.qml</file>
         <file>shaders/water.frag</file>
         <file>shaders/water.vert</file>
+        <file>DFPointLight.qml</file>
+        <file>shaders/pointlight.frag</file>
+        <file>shaders/pointlight.vert</file>
+        <file>DFDirectionalLight.qml</file>
     </qresource>
 </RCC>

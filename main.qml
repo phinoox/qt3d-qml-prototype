@@ -95,7 +95,7 @@ Entity {
             id: framegraph
             viewCamera: viewCamera
             sceneCamera: camera
-            lightCamera: light.lightCamera
+            shadowCamera: light.lightCamera
             width:_window.width*1.05
             height:_window.height*1.05
         },
@@ -153,11 +153,19 @@ Entity {
                     near: camera.nearPlane
             }
 
+
     SceneQuad {
        layer:framegraph.viewLayer
         material: SceneMaterial {
             effect: sceneQuadEffect
         }
+    }
+    DFPointLight {
+        layer:framegraph.lightLayer
+        colorTexture: framegraph.colorTexture
+        positionTexture: framegraph.positionTexture
+        normalTexture: framegraph.normalTexture
+        screenSize: Qt.size(_window.width*1.05,_window.height*1.05)
     }
 
 

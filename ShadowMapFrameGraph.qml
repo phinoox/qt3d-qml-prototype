@@ -57,7 +57,7 @@ RenderSettings {
 
     property alias viewCamera: viewCameraSelector.camera
     property alias sceneCamera: sceneCameraSelector.camera
-    property alias lightCamera:lightCameraSelector.camera
+    property alias shadowCamera:shadowCameraSelector.camera
     property int width:1024;
     property int height:1024;
 
@@ -67,6 +67,7 @@ RenderSettings {
     readonly property Texture2D depthTexture: depthTexture
     readonly property Texture2D shadowDepthTexture: shadowDepthTexture
     readonly property Layer viewLayer : viewLayer
+    readonly property Layer lightLayer :lightLayer
 
     activeFrameGraph: Viewport {
         normalizedRect: Qt.rect(0.0, 0.0, 1.0, 1.0)
@@ -104,138 +105,169 @@ RenderSettings {
                         buffers: ClearBuffers.ColorDepthBuffer
 
                         CameraSelector {
-                            id: lightCameraSelector
+                            id: shadowCameraSelector
                         }
                     }
                 }
             }
 
 
-        RenderPassFilter {
-            matchAny: [ FilterKey { name: "pass"; value: "default" } ]
+            RenderPassFilter {
+                matchAny: [ FilterKey { name: "pass"; value: "default" } ]
 
-            RenderTargetSelector {
-                target: RenderTarget {
-                    attachments: [
-                        RenderTargetOutput {
-                            objectName: "colorTexture"
-                            attachmentPoint: RenderTargetOutput.Color0
-                            texture: Texture2D {
-                                id: colorTexture
-                                width: root.width
-                                height: root.height
-                                format: Texture.RGBA32F
-                                generateMipMaps: false
-                                magnificationFilter: Texture.Linear
-                                minificationFilter: Texture.Linear
-                                wrapMode {
-                                    x: WrapMode.ClampToEdge
-                                    y: WrapMode.ClampToEdge
+                RenderTargetSelector {
+                    target: RenderTarget {
+                        attachments: [
+                            RenderTargetOutput {
+                                objectName: "colorTexture"
+                                attachmentPoint: RenderTargetOutput.Color0
+                                texture: Texture2D {
+                                    id: colorTexture
+                                    width: root.width
+                                    height: root.height
+                                    format: Texture.RGBA32F
+                                    generateMipMaps: false
+                                    magnificationFilter: Texture.Linear
+                                    minificationFilter: Texture.Linear
+                                    wrapMode {
+                                        x: WrapMode.ClampToEdge
+                                        y: WrapMode.ClampToEdge
+                                    }
+                                    comparisonFunction: Texture.CompareLessEqual
+                                    comparisonMode: Texture.CompareRefToTexture
                                 }
-                                comparisonFunction: Texture.CompareLessEqual
-                                comparisonMode: Texture.CompareRefToTexture
-                            }
-                        },
-                        RenderTargetOutput {
-                            objectName: "normalTexture"
-                            attachmentPoint: RenderTargetOutput.Color1
-                            texture: Texture2D {
-                                id: normalTexture
-                                width: root.width
-                                height: root.height
-                                format: Texture.RGBA32F
-                                generateMipMaps: false
-                                magnificationFilter: Texture.Linear
-                                minificationFilter: Texture.Linear
-                                wrapMode {
-                                    x: WrapMode.ClampToEdge
-                                    y: WrapMode.ClampToEdge
+                            },
+                            RenderTargetOutput {
+                                objectName: "normalTexture"
+                                attachmentPoint: RenderTargetOutput.Color1
+                                texture: Texture2D {
+                                    id: normalTexture
+                                    width: root.width
+                                    height: root.height
+                                    format: Texture.RGBA32F
+                                    generateMipMaps: false
+                                    magnificationFilter: Texture.Linear
+                                    minificationFilter: Texture.Linear
+                                    wrapMode {
+                                        x: WrapMode.ClampToEdge
+                                        y: WrapMode.ClampToEdge
+                                    }
+                                    comparisonFunction: Texture.CompareLessEqual
+                                    comparisonMode: Texture.CompareRefToTexture
                                 }
-                                comparisonFunction: Texture.CompareLessEqual
-                                comparisonMode: Texture.CompareRefToTexture
-                            }
-                        },
-                        RenderTargetOutput {
-                            objectName: "positionTexture"
-                            attachmentPoint: RenderTargetOutput.Color2
-                            texture: Texture2D {
-                                id: positionTexture
-                                width: root.width
-                                height: root.height
-                                format: Texture.RGB32F
-                                generateMipMaps: false
-                                magnificationFilter: Texture.Linear
-                                minificationFilter: Texture.Linear
-                                wrapMode {
-                                    x: WrapMode.ClampToEdge
-                                    y: WrapMode.ClampToEdge
+                            },
+                            RenderTargetOutput {
+                                objectName: "positionTexture"
+                                attachmentPoint: RenderTargetOutput.Color2
+                                texture: Texture2D {
+                                    id: positionTexture
+                                    width: root.width
+                                    height: root.height
+                                    format: Texture.RGB32F
+                                    generateMipMaps: false
+                                    magnificationFilter: Texture.Linear
+                                    minificationFilter: Texture.Linear
+                                    wrapMode {
+                                        x: WrapMode.ClampToEdge
+                                        y: WrapMode.ClampToEdge
+                                    }
+                                    comparisonFunction: Texture.CompareLessEqual
+                                    comparisonMode: Texture.CompareRefToTexture
                                 }
-                                comparisonFunction: Texture.CompareLessEqual
-                                comparisonMode: Texture.CompareRefToTexture
-                            }
-                        },
-                        RenderTargetOutput {
-                            objectName: "depthTexture"
-                            attachmentPoint: RenderTargetOutput.Depth
-                            texture: Texture2D {
-                                id: depthTexture
-                                width: root.width
-                                height: root.height
-                                format: Texture.DepthFormat
-                                generateMipMaps: false
-                                magnificationFilter: Texture.Linear
-                                minificationFilter: Texture.Linear
-                                wrapMode {
-                                    x: WrapMode.ClampToEdge
-                                    y: WrapMode.ClampToEdge
+                            },
+                            RenderTargetOutput {
+                                objectName: "depthTexture"
+                                attachmentPoint: RenderTargetOutput.Depth
+                                texture: Texture2D {
+                                    id: depthTexture
+                                    width: root.width
+                                    height: root.height
+                                    format: Texture.DepthFormat
+                                    generateMipMaps: false
+                                    magnificationFilter: Texture.Linear
+                                    minificationFilter: Texture.Linear
+                                    wrapMode {
+                                        x: WrapMode.ClampToEdge
+                                        y: WrapMode.ClampToEdge
+                                    }
+                                    comparisonFunction: Texture.CompareLessEqual
+                                    comparisonMode: Texture.CompareRefToTexture
+
                                 }
-                                comparisonFunction: Texture.CompareLessEqual
-                                comparisonMode: Texture.CompareRefToTexture
-
-                            }
-                        }
-                    ]
-                }
-
-                ClearBuffers {
-                    buffers: ClearBuffers.ColorDepthBuffer
-                    clearColor: Qt.rgba(1.0,0,0,1)
-                    CameraSelector {
-                        id: sceneCameraSelector
-                        LayerFilter {
-                            layers: [viewLayer]
-                            filterMode: LayerFilter.DiscardAnyMatchingLayers
-                        }
-                        FrustumCulling {}
-
-                    }
-                }
-            }
-        }
-
-
-
-
-        RenderPassFilter {
-            matchAny: [ FilterKey { name: "pass"; value: "final" } ]
-
-            ClearBuffers {
-                clearColor: Qt.rgba(0.0, 0.0, 1.0, 1.0)
-                buffers: ClearBuffers.ColorDepthBuffer
-
-                CameraSelector {
-                    id: viewCameraSelector
-                    camera: sceneCameraSelector.camera
-                    LayerFilter {
-                        layers:[
-                            Layer {
-                                id:viewLayer
                             }
                         ]
+                    }
+
+                    ClearBuffers {
+                        buffers: ClearBuffers.ColorDepthBuffer
+                        clearColor: Qt.rgba(1.0,0,0,1)
+                        CameraSelector {
+                            id: sceneCameraSelector
+                            LayerFilter {
+                                layers: [viewLayer]
+                                filterMode: LayerFilter.DiscardAnyMatchingLayers
+                            }
+                            FrustumCulling {}
+
+                        }
+                    }
+                }
+            }
+
+            RenderPassFilter {
+                matchAny: [ FilterKey { name: "pass"; value: "light" } ]
+
+                RenderTargetSelector {
+                    target: RenderTarget {
+                        attachments: [
+                            RenderTargetOutput {
+                                objectName: "colorTexture"
+                                attachmentPoint: RenderTargetOutput.Color0
+                                texture: colorTexture
+                            }
+                        ]
+                        ClearBuffers {
+                            clearColor: Qt.rgba(0.0, 0.0, 1.0, 1.0)
+                            buffers: ClearBuffers.DepthBuffer
+
+                            CameraSelector {
+                                id: lightCameraSelector
+                                camera: sceneCameraSelector.camera
+                                LayerFilter {
+                                    layers:[
+                                        Layer {
+                                            id:lightLayer
+                                        }
+                                    ]
+                                }
+                                FrustumCulling {}
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            RenderPassFilter {
+                matchAny: [ FilterKey { name: "pass"; value: "final" } ]
+
+                ClearBuffers {
+                    clearColor: Qt.rgba(0.0, 0.0, 1.0, 1.0)
+                    buffers: ClearBuffers.ColorDepthBuffer
+
+                    CameraSelector {
+                        id: viewCameraSelector
+                        camera: sceneCameraSelector.camera
+                        LayerFilter {
+                            layers:[
+                                Layer {
+                                    id:viewLayer
+                                }
+                            ]
+                        }
                     }
                 }
             }
         }
     }
-}
 }

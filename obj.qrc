@@ -6,5 +6,6 @@
         <file>assets/obj/trefoil.obj</file>
         <file>assets/obj/toyplane.obj</file>
         <file>assets/obj/ball.obj</file>
+        <file>assets/obj/smoothsphere.obj</file>
     </qresource>
 </RCC>

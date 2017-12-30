@@ -33,7 +33,7 @@ uniform float shininess;
 uniform float normalAmount;
 uniform vec3 eyePosition;
 
-out vec4 fragColor;
+
 
 //where the hell is this shit?!?
 //#pragma include phong.inc.frag
@@ -101,11 +101,18 @@ void main()
 
     outputColor += vec4(skycolor.rgb, vpos.y);
     outputColor += (foamTextureColor.rgba*vpos.y);
-    fragColor = vec4(outputColor.rgb,1.0);
+    vec4 fragColor = vec4(outputColor.rgb,1.0);
  float shadowMapSample = textureProj(shadowMapTexture, positionInLightSpace);
  if (shadowMapSample <= 0)
     fragColor*=0.25;
 
-    //fragColor =vec4(0,1,0,1);
+ //diffuse
+ gl_FragData[0]= fragColor;
+
+ //normal
+ gl_FragData[1]=vec4(wNormal,1);
+ //position
+ gl_FragData[2]=vec4(worldPosition,1.0);
+
 }
 

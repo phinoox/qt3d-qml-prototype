@@ -36,4 +36,8 @@ DISTFILES += \
     WaterPlane.qml \
     WaterMaterial.qml \
     shaders/water.vert \
-    shaders/water.frag
+    shaders/water.frag \
+    DFPointLight.qml \
+    shaders/pointlight.vert \
+    shaders/pointlight.frag \
+    LightMaterial.qml
